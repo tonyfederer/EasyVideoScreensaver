@@ -38,8 +38,19 @@ To install, run the installer:
 After installing, you can select Easy Video Screensaver as your active screensaver 
 using these steps:
 
-Windows 10: Settings > Personalization > Lock Screen > Screen saver settings
-Windows 7, 8, 8.1: Control Panel > Appearance and Personalization > Personalization
+### Windows 10:
+
+1. Go to Start > Settings.
+2. Click Personalization.
+3. Click Lock Screen.
+4. Click Screen saver settings.
+
+### Windows 7/8/8.1
+
+1. Go to Start > Control Panel.
+2. Click Appearance and Personalization.
+3. Click Personalization.
+4. Click Screen Saver.
 
 ## Feedback/Contribute
 
