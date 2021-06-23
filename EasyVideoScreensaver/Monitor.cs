@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Runtime.Versioning;
 
 namespace EasyVideoScreensaver
 {
@@ -70,9 +69,9 @@ namespace EasyVideoScreensaver
         public uint DpiX { get { return dpiX; } }
         public uint DpiY { get { return dpiY; } }
 
-        private uint dpiX, dpiY;
+        uint dpiX, dpiY;
 
-        private Monitor(IntPtr monitor, IntPtr hdc)
+        Monitor(IntPtr monitor, IntPtr hdc)
         {
             var info = new NativeMethods.MonitorInfoEx();
             NativeMethods.GetMonitorInfo(new HandleRef(null, monitor), info);
@@ -84,11 +83,10 @@ namespace EasyVideoScreensaver
                         info.rcWork.Left, info.rcWork.Top,
                         info.rcWork.Right - info.rcWork.Left,
                         info.rcWork.Bottom - info.rcWork.Top);
-            IsPrimary = ((info.dwFlags & NativeMethods.MonitorinfofPrimary) != 0);
+            IsPrimary = (info.dwFlags & NativeMethods.MonitorinfofPrimary) != 0;
             Name = new string(info.szDevice).TrimEnd((char)0);
 
             NativeMethods.GetDpiForMonitor(monitor, NativeMethods.DpiType.Effective, out dpiX, out dpiY);
-
         }
 
         public static IEnumerable<Monitor> AllMonitors
@@ -102,7 +100,7 @@ namespace EasyVideoScreensaver
             }
         }
 
-        private class MonitorEnumCallback
+        class MonitorEnumCallback
         {
             public ArrayList Monitors { get; private set; }
 
@@ -111,8 +109,7 @@ namespace EasyVideoScreensaver
                 Monitors = new ArrayList();
             }
 
-            public bool Callback(IntPtr monitor, IntPtr hdc,
-                           IntPtr lprcMonitor, IntPtr lparam)
+            public bool Callback(IntPtr monitor, IntPtr hdc, IntPtr lprcMonitor, IntPtr lparam)
             {
                 Monitors.Add(new Monitor(monitor, hdc));
                 return true;

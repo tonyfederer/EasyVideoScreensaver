@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Runtime.InteropServices;
 
 namespace EasyVideoScreensaver
@@ -9,13 +10,13 @@ namespace EasyVideoScreensaver
         public static extern bool GetClientRect(IntPtr hWnd, out RECT lpRect);
 
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        public static extern bool GetMonitorInfo(HandleRef hmonitor, [In, Out]MonitorInfoEx info);
+        public static extern bool GetMonitorInfo(HandleRef hmonitor, [In, Out] MonitorInfoEx info);
 
         [DllImport("user32.dll", ExactSpelling = true)]
         public static extern bool EnumDisplayMonitors(HandleRef hdc, IntPtr rcClip, MonitorEnumProc lpfnEnum, IntPtr dwData);
 
         [DllImport("Shcore.dll")]
-        public static extern IntPtr GetDpiForMonitor([In]IntPtr hmonitor, [In]DpiType dpiType, [Out]out uint dpiX, [Out]out uint dpiY);
+        public static extern IntPtr GetDpiForMonitor([In] IntPtr hmonitor, [In] DpiType dpiType, [Out] out uint dpiX, [Out] out uint dpiY);
 
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto, Pack = 4)]
         public class MonitorInfoEx
@@ -66,7 +67,7 @@ namespace EasyVideoScreensaver
 
             public override string ToString()
             {
-                return string.Format(System.Globalization.CultureInfo.CurrentCulture, "{{Left={0},Top={1},Right={2},Bottom={3}}}", Left, Top, Right, Bottom);
+                return string.Format(CultureInfo.CurrentCulture, "{{Left={0},Top={1},Right={2},Bottom={3}}}", Left, Top, Right, Bottom);
             }
         }
 
