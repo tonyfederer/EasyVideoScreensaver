@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Video Screensaver Settings" Height="220" Width="450" ResizeMode="NoResize">
+        Title="Video Screensaver Settings" Height="220" Width="450" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid>
         <Label Content="Video to Play:" HorizontalAlignment="Left" Margin="10,13,0,0" VerticalAlignment="Top" Width="98" Padding="0" Height="23" VerticalContentAlignment="Center"/>
         <TextBox Name="VideoFilenameTextBox" Height="23" Margin="113,13,10,0" VerticalAlignment="Top"/>
