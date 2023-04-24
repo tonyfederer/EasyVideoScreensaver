@@ -33,7 +33,7 @@ installed.
 
 To install, run the installer:
 
-[Download for Windows](https://github.com/tonyfederer/EasyVideoScreensaver/releases/download/v1.0/EasyVideoScreensaverSetup.zip)
+[Download for Windows](https://github.com/tonyfederer/EasyVideoScreensaver/releases/download/v1.1/EasyVideoScreensaverSetup.zip)
 
 After installing, you can select Easy Video Screensaver as your active screensaver 
 using these steps:
