@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Interop;
+using System.Windows.Media;
 
 namespace EasyVideoScreensaver
 {
@@ -10,10 +12,10 @@ namespace EasyVideoScreensaver
     public partial class App : Application
     {
         private HwndSource previewHwndSource;
-        private MainWindow mainWindow;
+        private VideoWindow mainWindow;
+        private MediaElement media;
 
         public MySettings settings;
-
         public string settingsFilename;
 
         void ApplicationStartup(object sender, StartupEventArgs e)
@@ -29,7 +31,7 @@ namespace EasyVideoScreensaver
 
             if (args.Length == 0)
             {
-                //If no parameters were specified, show setings
+                //If no parameters were specified, show settings
                 ShowSettings();
             }
             else
@@ -64,31 +66,25 @@ namespace EasyVideoScreensaver
 
         private void ShowScreensaver()
         {
+            LoadVideo();
+
             foreach (Monitor m in Monitor.AllMonitors)
             {
-                if (m.IsPrimary)
-                {
-                    //Show screensaver on primary monitor
-                    mainWindow = new MainWindow();
-                    mainWindow.WindowState = WindowState.Maximized;
-                    mainWindow.Show();
-                }
-                else
-                {
-                    //Show black screen on all other monitors
-                    BlackoutWindow window = new BlackoutWindow();
-                    window.Top = m.Bounds.Top / (m.DpiY / 96);
-                    window.Left = m.Bounds.Left / (m.DpiX / 96);
-                    window.Height = m.Bounds.Height / (m.DpiY / 96);
-                    window.Width = m.Bounds.Width / (m.DpiX / 96);
-                    window.Show();
-                }
+                //Show video window on all screens
+                VideoWindow window = new VideoWindow(media);
+                window.Top = m.Bounds.Top / (m.DpiY / 96);
+                window.Left = m.Bounds.Left / (m.DpiX / 96);
+                window.Height = m.Bounds.Height / (m.DpiY / 96);
+                window.Width = m.Bounds.Width / (m.DpiX / 96);
+                window.Show();
             }
         }
 
         private void ShowPreview(IntPtr pPreviewHnd)
         {
-            mainWindow = new MainWindow();
+            LoadVideo();
+
+            mainWindow = new VideoWindow(media);
 
             NativeMethods.RECT lpRect = new NativeMethods.RECT();
             bool retVal = NativeMethods.GetClientRect(pPreviewHnd, out lpRect);
@@ -104,7 +100,7 @@ namespace EasyVideoScreensaver
 
             previewHwndSource = new HwndSource(sourceParams);
             previewHwndSource.Disposed += new EventHandler(previewHwndSource_Disposed);
-            previewHwndSource.RootVisual = mainWindow.grid1;
+            previewHwndSource.RootVisual = mainWindow.Display;
         }
 
         private void ShowSettings()
@@ -117,6 +113,38 @@ namespace EasyVideoScreensaver
         {
             //Close window when preview window is disposed
             mainWindow.Close();
+        }
+
+        private void LoadVideo()
+        {
+            media = new MediaElement();
+            media.Source = new Uri(settings.VideoFilename, UriKind.Absolute);
+            switch (settings.StretchMode)
+            {
+                case "Fill":
+                    //Stretch to fit screen
+                    media.Stretch = Stretch.Fill;
+                    break;
+                case "Center":
+                    //Center in screen
+                    media.Stretch = Stretch.None;
+                    break;
+                default:
+                    //Fit to screen (maintain aspect ratio)
+                    media.Stretch = Stretch.Uniform;
+                    break;
+            }
+            media.Volume = settings.Volume;
+            media.IsMuted = settings.Mute;
+
+            //Detect when media ends
+            media.MediaEnded += Media_MediaEnded;
+        }
+
+        private void Media_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            //Loop video
+            media.Position = TimeSpan.Zero;
         }
 
     }

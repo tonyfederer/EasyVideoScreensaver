@@ -17,11 +17,14 @@ namespace EasyVideoScreensaver
     /// <summary>
     /// Interaction logic for BlackoutWindow.xaml
     /// </summary>
-    public partial class BlackoutWindow : Window
+    public partial class VideoWindow : Window
     {
-        public BlackoutWindow()
+        public VideoWindow(MediaElement mediaElement)
         {
             InitializeComponent();
+            VisualBrush brush = new VisualBrush();
+            brush.Visual = mediaElement;
+            Display.Fill = brush;
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)

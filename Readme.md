@@ -64,6 +64,11 @@ If you find this project useful, please consider donating.  Your donations are a
 
 ## Version History
 
+### 1.1
+- Upgraded to .NET 4.8
+- Play video on all monitors
+- Center settings window in screen
+
 ### 1.0
 - Initial Release
 
