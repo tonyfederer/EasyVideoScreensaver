@@ -33,7 +33,7 @@ installed.
 
 To install, run the installer:
 
-[Download for Windows](https://github.com/tonyfederer/EasyVideoScreensaver/releases/download/v1.1/EasyVideoScreensaverSetup.zip)
+[Download for Windows](https://github.com/tonyfederer/EasyVideoScreensaver/releases/download/v1.2/EasyVideoScreensaverSetup.zip)
 
 After installing, you can select Easy Video Screensaver as your active screensaver 
 using these steps:
@@ -63,6 +63,11 @@ If you find this project useful, please consider donating.  Your donations are a
 [![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=DC96GRBH4877Q)
 
 ## Version History
+
+### 1.2
+- Added setting to resume video from previous position
+- Hide mouse cursor when screensaver is playing
+- Fixed error if video does not exist
 
 ### 1.1
 - Upgraded to .NET 4.8
