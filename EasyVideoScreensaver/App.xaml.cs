@@ -118,7 +118,10 @@ namespace EasyVideoScreensaver
         private void LoadVideo()
         {
             media = new MediaElement();
-            media.Source = new Uri(settings.VideoFilename, UriKind.Absolute);
+            if (!string.IsNullOrEmpty(settings.VideoFilename) && System.IO.File.Exists(settings.VideoFilename))
+            {
+                media.Source = new Uri(settings.VideoFilename, UriKind.Absolute);
+            }
             switch (settings.StretchMode)
             {
                 case "Fill":
@@ -136,6 +139,10 @@ namespace EasyVideoScreensaver
             }
             media.Volume = settings.Volume;
             media.IsMuted = settings.Mute;
+            if (settings.Resume)
+            {
+                media.Position = TimeSpan.FromSeconds(settings.ResumePosition);
+            }
 
             //Detect when media ends
             media.MediaEnded += Media_MediaEnded;
