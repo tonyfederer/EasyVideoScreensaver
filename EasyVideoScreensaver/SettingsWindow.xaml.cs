@@ -34,6 +34,7 @@ namespace EasyVideoScreensaver
             StretchModeComboBox.SelectedValue = settings.StretchMode;
             VolumeSlider.Value = settings.Volume;
             MuteCheckBox.IsChecked = settings.Mute;
+            ResumeCheckBox.IsChecked = settings.Resume;
 
             //Set initial focus
             VideoFilenameTextBox.Focus();
@@ -49,10 +50,16 @@ namespace EasyVideoScreensaver
             }
 
             //Save settings
+            if (settings.VideoFilename != VideoFilenameTextBox.Text)
+            {
+                //If video filename has changed, then reset resume position
+                settings.ResumePosition = 0;
+            }
             settings.VideoFilename = VideoFilenameTextBox.Text;
             settings.StretchMode = (string)StretchModeComboBox.SelectedValue;
             settings.Volume = VolumeSlider.Value;
             settings.Mute = MuteCheckBox.IsChecked == true;
+            settings.Resume = ResumeCheckBox.IsChecked == true;
             settings.Save(settingsFilename);
 
             //Close window

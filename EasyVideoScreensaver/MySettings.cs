@@ -11,6 +11,9 @@ namespace EasyVideoScreensaver
         public string StretchMode { get; set; }
         public double Volume { get; set; }
         public Boolean Mute { get; set; }
+        public Boolean Resume { get; set; }
+
+        public double ResumePosition { get; set; }
 
         public void Save(string filename)
         {
@@ -41,6 +44,8 @@ namespace EasyVideoScreensaver
                 settings.StretchMode = "Fit";
                 settings.Mute = false;
                 settings.Volume = .5;
+                settings.Resume = false;
+                settings.ResumePosition = 0;
                 return settings;
             }
 

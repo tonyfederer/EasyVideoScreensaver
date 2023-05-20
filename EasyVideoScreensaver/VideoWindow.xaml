@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="VideoWindow" Height="450" Width="800" Background="Black" WindowState="Normal" WindowStyle="None" ResizeMode="NoResize" KeyDown="Window_KeyDown" MouseDown="Window_MouseDown">
+        Title="VideoWindow" Height="450" Width="800" Background="Black" WindowState="Normal" WindowStyle="None" ResizeMode="NoResize" KeyDown="Window_KeyDown" MouseDown="Window_MouseDown" Cursor="None">
     <Rectangle Name="Display">
     </Rectangle>
 </Window>

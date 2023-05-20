@@ -19,10 +19,15 @@ namespace EasyVideoScreensaver
     /// </summary>
     public partial class VideoWindow : Window
     {
-        public VideoWindow(MediaElement mediaElement)
+        private MySettings settings = ((App)Application.Current).settings;
+        private string settingsFilename = ((App)Application.Current).settingsFilename;
+        private MediaElement mediaElement;
+
+        public VideoWindow(MediaElement media)
         {
             InitializeComponent();
             VisualBrush brush = new VisualBrush();
+            mediaElement = media;
             brush.Visual = mediaElement;
             Display.Fill = brush;
         }
@@ -31,14 +36,28 @@ namespace EasyVideoScreensaver
         {
             //Close screensaver when key is pressed
             e.Handled = true;
-            Application.Current.Shutdown();
+            CloseScreensaver();
         }
 
         private void Window_MouseDown(object sender, MouseEventArgs e)
         {
             //Close screensaver when mouse is moved
             e.Handled = true;
+            CloseScreensaver();
+        }
+
+        private void CloseScreensaver()
+        {
+            //Save resume position
+            if (settings.Resume)
+            {
+                settings.ResumePosition = mediaElement.Position.TotalSeconds;
+                settings.Save(settingsFilename);
+            }
+
+            //Close screensaver
             Application.Current.Shutdown();
         }
+
     }
 }
