@@ -29,7 +29,7 @@ namespace EasyVideoScreensaver
             this.DataContext = settings;
 
             //Load settings
-            VideoFilenameTextBox.Text = settings.VideoFilename;
+            VideoFilenameTextBox.Text = VideoFilenameText(settings.VideoFilenames);
             StretchModeComboBox.ItemsSource = new List<string> { "Fit", "Fill", "Center" };
             StretchModeComboBox.SelectedValue = settings.StretchMode;
             VolumeSlider.Value = settings.Volume;
@@ -42,20 +42,7 @@ namespace EasyVideoScreensaver
 
         private void OKButton_Click(object sender, RoutedEventArgs e)
         {
-            //Validate video file exists
-            if (!string.IsNullOrEmpty(VideoFilenameTextBox.Text) && !System.IO.File.Exists(VideoFilenameTextBox.Text))
-            {
-                MessageBox.Show("The specified file does not exist.", "File Does Not Exist", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                return;
-            }
-
             //Save settings
-            if (settings.VideoFilename != VideoFilenameTextBox.Text)
-            {
-                //If video filename has changed, then reset resume position
-                settings.ResumePosition = 0;
-            }
-            settings.VideoFilename = VideoFilenameTextBox.Text;
             settings.StretchMode = (string)StretchModeComboBox.SelectedValue;
             settings.Volume = VolumeSlider.Value;
             settings.Mute = MuteCheckBox.IsChecked == true;
@@ -77,19 +64,20 @@ namespace EasyVideoScreensaver
             //Show open dialog
             OpenFileDialog dialog = new OpenFileDialog();
             dialog.Title = "Select Video File";
-            if (string.IsNullOrEmpty(settings.VideoFilename))
+            dialog.Multiselect = true;
+            if (settings.VideoFilenames.Count() == 0)
                 dialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyVideos);
             else
             {
-                dialog.FileName = settings.VideoFilename;
-                dialog.InitialDirectory = new System.IO.FileInfo(settings.VideoFilename).DirectoryName;
+                dialog.InitialDirectory = new System.IO.FileInfo(settings.VideoFilenames[0]).DirectoryName;
             }
 
             dialog.Filter = @"Video Files|*.mp4;*.m4v;*.mp4v;*.3gp;*.3gpp;*.3g2;*.3gp2;*.mov;*.wmv;*.avi;*.mkv;*.mk3d;*.m2ts;*.m2t;*.mts;*.ts;*.tts|MP4 Video Files |*.mp4;*.m4v;*.mp4v;*.3gp;*.3gpp;*.3g2;*.3gp2|QuickTime Movie Files|*.mov|Windows Video Files|*.wmv;*.avi|MKV Video Files|*.mkv|MK3D video file|*.mk3d|MPEG-2 TS Video Files|*.m2ts;*.m2t;*.mts;*.ts;*.tts|All Files (*.*)|*.*";
             dialog.CheckFileExists = true;
             if (dialog.ShowDialog() == true)
             {
-                VideoFilenameTextBox.Text = dialog.FileName;
+                VideoFilenameTextBox.Text = VideoFilenameText(dialog.FileNames);
+                settings.VideoFilenames = dialog.FileNames;
             }
         }
 
@@ -106,6 +94,19 @@ namespace EasyVideoScreensaver
         private void MuteCheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
             VolumeSlider.IsEnabled = true;
+        }
+
+        private string VideoFilenameText(string[] fileNames)
+        {
+            switch (fileNames.Count())
+            {
+                case 0:
+                    return "";
+                case 1:
+                    return fileNames[0];
+                default:
+                    return new System.IO.FileInfo(fileNames[0]).DirectoryName;
+            }
         }
     }
 }

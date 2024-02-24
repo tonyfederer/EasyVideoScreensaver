@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interop;
@@ -118,9 +119,11 @@ namespace EasyVideoScreensaver
         private void LoadVideo()
         {
             media = new MediaElement();
-            if (!string.IsNullOrEmpty(settings.VideoFilename) && System.IO.File.Exists(settings.VideoFilename))
+            if (settings.VideoFilenames.Count() > 0)
             {
-                media.Source = new Uri(settings.VideoFilename, UriKind.Absolute);
+                Random random = new Random();
+                string randomVideo = settings.VideoFilenames[random.Next(0, settings.VideoFilenames.Length)];
+                media.Source = new Uri(randomVideo, UriKind.Absolute);
             }
             switch (settings.StretchMode)
             {

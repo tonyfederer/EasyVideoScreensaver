@@ -7,7 +7,7 @@ namespace EasyVideoScreensaver
 { 
     public class MySettings
     {
-        public string VideoFilename { get; set; }
+        public string[] VideoFilenames { get; set; }
         public string StretchMode { get; set; }
         public double Volume { get; set; }
         public Boolean Mute { get; set; }
@@ -40,7 +40,7 @@ namespace EasyVideoScreensaver
             {
                 //Get default settings
                 settings = new MySettings();
-                settings.VideoFilename = "";
+                settings.VideoFilenames = new string[] {};
                 settings.StretchMode = "Fit";
                 settings.Mute = false;
                 settings.Volume = .5;
