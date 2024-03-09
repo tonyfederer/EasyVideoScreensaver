@@ -1,16 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+
 using Microsoft.Win32;
 
 namespace EasyVideoScreensaver
@@ -34,7 +27,7 @@ namespace EasyVideoScreensaver
             StretchModeComboBox.SelectedValue = settings.StretchMode;
             VolumeSlider.Value = settings.Volume;
             MuteCheckBox.IsChecked = settings.Mute;
-            ResumeCheckBox.IsChecked = settings.Resume;
+            LoadResumeOption(settings, settings.VideoFilenames);
 
             //Set initial focus
             VideoFilenameTextBox.Focus();
@@ -74,6 +67,7 @@ namespace EasyVideoScreensaver
 
             dialog.Filter = @"Video Files|*.mp4;*.m4v;*.mp4v;*.3gp;*.3gpp;*.3g2;*.3gp2;*.mov;*.wmv;*.avi;*.mkv;*.mk3d;*.m2ts;*.m2t;*.mts;*.ts;*.tts|MP4 Video Files |*.mp4;*.m4v;*.mp4v;*.3gp;*.3gpp;*.3g2;*.3gp2|QuickTime Movie Files|*.mov|Windows Video Files|*.wmv;*.avi|MKV Video Files|*.mkv|MK3D video file|*.mk3d|MPEG-2 TS Video Files|*.m2ts;*.m2t;*.mts;*.ts;*.tts|All Files (*.*)|*.*";
             dialog.CheckFileExists = true;
+            dialog.FileOk += OnFileOk;
             if (dialog.ShowDialog() == true)
             {
                 VideoFilenameTextBox.Text = VideoFilenameText(dialog.FileNames);
@@ -107,6 +101,24 @@ namespace EasyVideoScreensaver
                 default:
                     return new System.IO.FileInfo(fileNames[0]).DirectoryName;
             }
+        }
+
+        private void LoadResumeOption(MySettings settings, string[] files)
+        {
+            if (files.Count() > 1)
+            {
+                ResumeCheckBox.IsEnabled = false;
+                ResumeCheckBox.IsChecked = false;
+            }
+            else
+            {
+                ResumeCheckBox.IsEnabled = true;
+                ResumeCheckBox.IsChecked = settings.Resume;
+            }
+        }
+        private void OnFileOk(object sender, CancelEventArgs e)
+        {
+            LoadResumeOption(settings, ((OpenFileDialog)sender).FileNames);
         }
     }
 }
