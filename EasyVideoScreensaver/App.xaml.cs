@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interop;
@@ -115,13 +116,28 @@ namespace EasyVideoScreensaver
             mainWindow.Close();
         }
 
+        private string RandomVideo(string[] files)
+        {
+            Random random = new Random();
+            string randomVideo = files[random.Next(0, files.Length)];
+            while (files.Count() > 0 && !System.IO.File.Exists(randomVideo))
+            {
+                files = files.Where(f => f != randomVideo).ToArray();
+                randomVideo = files[random.Next(0, files.Length)];
+            }
+
+            // If no valid files found, screen will go black as the last video is not valid either
+            return randomVideo;
+        }
+
         private void LoadVideo()
         {
             media = new MediaElement();
-            if (!string.IsNullOrEmpty(settings.VideoFilename) && System.IO.File.Exists(settings.VideoFilename))
+            if (settings.VideoFilenames.Count() > 0)
             {
-                media.Source = new Uri(settings.VideoFilename, UriKind.Absolute);
+                media.Source = new Uri(RandomVideo(settings.VideoFilenames));
             }
+
             switch (settings.StretchMode)
             {
                 case "Fill":
@@ -137,6 +153,7 @@ namespace EasyVideoScreensaver
                     media.Stretch = Stretch.Uniform;
                     break;
             }
+
             media.Volume = settings.Volume;
             media.IsMuted = settings.Mute;
             if (settings.Resume)
